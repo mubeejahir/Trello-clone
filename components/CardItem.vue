@@ -19,6 +19,7 @@
 
 <script>
 export default {
+  emits: ["delete-card"],
   props: ["itemData"],
   methods: {
     deleteCard(cardId) {

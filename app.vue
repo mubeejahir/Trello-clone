@@ -9,6 +9,7 @@
         @delete-board="handleDeleteBoard"
         v-if="data"
         :boards="data"
+        :currentBoard="currentBoard.name"
       ></SideBar>
       <div class="h-[90vh] w-full gap-4 bg-[#7992de42] text-[#555555]">
         <!-- Header -->
@@ -293,8 +294,19 @@ export default {
         let isDelete = confirm(
           `Are you sure you want to delete this ${boardName} board ?`
         );
+        if (findIndex === -1) {
+          console.log("board not found");
+        }
+        if (findIndex === 0) {
+          console.log("cannot delete the default board");
+          return;
+        }
         if (isDelete) {
           this.data.board.splice(findIndex, 1);
+          if (this.currentBoard.name === boardName) {
+            this.currentBoard = JSON.parse(JSON.stringify(this.data.board[0]));
+          }
+          await this.updateFirebase();
           console.log("delete-board succesfull", this.data.board);
         }
         console.log("Delete action cancelled!");
@@ -302,61 +314,47 @@ export default {
         console.log("Error on deleting board", error);
       }
     },
-    // moveItem({ itemId, fromCard, toCard }) {
-    //   // Find the source card's items array
-    //   const sourceCard = this.data.board.boardDetails.find(
-    //     (card) => card.header === fromCard
-    //   );
-    //   const destinationCard = this.data.board.boardDetails.find(
-    //     (card) => card.header === toCard
-    //   );
+    async moveItem({ itemId, fromCard, toCard }) {
+      // Find the source card's items array
+      try {
+        const sourceCard = this.currentBoard.boardDetails.find(
+          (card) => card.header === fromCard
+        );
+        const destinationCard = this.currentBoard.boardDetails.find(
+          (card) => card.header === toCard
+        );
+        console.log("move-item", sourceCard, destinationCard, itemId);
+        // Find the item in the source card
+        const itemIndex = sourceCard.items.findIndex(
+          (item) => Number(item.id) === itemId
+        );
+        console.log(itemIndex);
+        if (itemIndex === -1) {
+          console.error("Item not found in source card");
+          return;
+        }
+        const item = sourceCard.items.splice(itemIndex, 1)[0]; // Remove from source
 
-    //   // Find the item in the source card
-    //   const itemIndex = sourceCard.items.findIndex(
-    //     (item) => item.id === itemId
-    //   );
-    //   const item = sourceCard.items.splice(itemIndex, 1)[0]; // Remove from source
+        // Add the item to the destination card
+        destinationCard.items.push(item);
 
-    //   // Add the item to the destination card
-    //   destinationCard.items.push(item);
-    //   console.log("Moved item:", item, "from", fromCard, "to", toCard);
-    // },
-    // getData() {
-    //   fetch("https://trello-clone-4712f-default-rtdb.firebaseio.com/data.json")
-    //     .then((response) => {
-    //       if (response.ok) {
-    //         return response.json();
-    //       }
-    //     })
-    //     .then((result) => {
-    //       this.data = result;
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // },
-    // processFirebaseData(data) {
-    //   if (!data || !Array.isArray(data)) return data;
+        const boardIndex = this.data.board.findIndex(
+          (board) => board.name === this.currentBoard.name
+        );
+        if (boardIndex !== -1) {
+          this.data.board[boardIndex] = {
+            name: this.currentBoard.name,
+            boardDetails: this.currentBoard.boardDetails,
+          };
+        }
 
-    //   return data.map((item) => {
-    //     if (item.board) {
-    //       item.board = item.board.map((board) => {
-    //         if (board.boardDetails) {
-    //           board.boardDetails = board.boardDetails.map((list) => {
-    //             // Convert placeholder back to empty array
-    //             if (list.items && list.items["0"] === null) {
-    //               list.items = [];
-    //             }
-    //             return list;
-    //           });
-    //         }
-    //         return board;
-    //       });
-    //     }
-    //     return item;
-    //   });
-    // },
+        await this.updateFirebase();
 
+        console.log("Moved item:", item, "from", fromCard, "to", toCard);
+      } catch (error) {
+        console.log("Error on drag and drop the item!", error);
+      }
+    },
     async getData() {
       try {
         const response = await fetch(

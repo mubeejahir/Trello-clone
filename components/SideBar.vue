@@ -9,7 +9,12 @@
       </button>
     </div>
     <div
-      class="group flex cursor-pointer items-center px-3 py-2 text-[14px] font-medium visited:bg-red-500 hover:bg-slate-300"
+      :class="[
+        'group flex cursor-pointer items-center px-3 py-2 text-[14px] font-medium',
+        isActiveBoard(board.name)
+          ? 'bg-slate-400 text-white'
+          : 'hover:bg-slate-300',
+      ]"
       v-for="board in boards.board"
       :key="board.name"
       @click="changeBoard(board.name)"
@@ -28,15 +33,23 @@
       :class="[
         `absolute left-[210px] top-[12px] ${
           displayBoard ? 'flex' : 'hidden'
-        } h-[200px] w-[255px] flex-col rounded-lg bg-white shadow-md p-4 z-[1]`,
+        } h-[200px] w-[255px] flex-col rounded-lg bg-white shadow-md px-[16px] pt-[11px] pb-[12px] z-[1]`,
       ]"
     >
-      <h3
-        class="border-b-[1px] border-[#808080] p-[4px] text-center text-[14px] font-semibold"
+      <div
+        class="relative flex items-center justify-center border-b-[1px] border-[#808080] pb-[4px]"
       >
-        Create Board
-      </h3>
-
+        <h3 class="text-center text-[14px] font-semibold">Create Board</h3>
+        <button
+          class="absolute right-0 rounded-sm p-1 hover:bg-slate-200"
+          @click="handleCancel"
+        >
+          <img
+            src="/assets/img/cancel.png"
+            class="h-[20px] w-[20px] opacity-50"
+          />
+        </button>
+      </div>
       <label for="boardName" class="py-[7px] text-[14px] font-semibold"
         >Board Name:</label
       >
@@ -64,7 +77,7 @@
 
 <script>
 export default {
-  props: ["boards"],
+  props: ["boards", "currentBoard"],
   data() {
     return {
       displayBoard: false,
@@ -95,6 +108,13 @@ export default {
     deleteBoard(name) {
       this.$emit("delete-board", name);
       console.log(name);
+    },
+    isActiveBoard(boardName) {
+      return this.currentBoard == boardName;
+    },
+    handleCancel() {
+      this.displayBoard = !this.displayBoard;
+      this.boardName = "";
     },
   },
 };

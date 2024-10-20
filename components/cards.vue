@@ -60,6 +60,7 @@
 
 <script>
 export default {
+  emits: ["delete-cardItem", "move-item"],
   props: ["dataItem"],
   data() {
     return {
@@ -77,7 +78,6 @@ export default {
       });
     },
     setCardItem() {
-      // this.cardItemData.push(this.cardData);
       console.log(this.cardData);
       this.$emit("add-card", this.cardData);
 

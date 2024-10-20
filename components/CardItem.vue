@@ -11,7 +11,7 @@
         class="absolute right-1 hidden h-[28px] w-[28px] items-center justify-center rounded-[13px] hover:bg-[#D4BFFF] group-hover:flex"
         @click="deleteCard(data.id)"
       >
-        <img src="../assets/img/delete.png" />
+        <img src="/assets/img/delete.png" />
       </span>
     </div>
   </div>

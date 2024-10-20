@@ -3,21 +3,22 @@
     <Nav></Nav>
     <div class="flex">
       <SideBar
-        class="w-[260px] border-r-[1px] border-slate-300 bg-[#7992de9c] text-slate-800 shadow-md"
+        class="w-[260px] bg-[#7992de9c] text-slate-800 shadow-lg"
         @add-board="setBoard"
         @board-name="handleBoard"
+        @delete-board="handleDeleteBoard"
         v-if="data"
         :boards="data"
       ></SideBar>
       <div class="h-[90vh] w-full gap-4 bg-[#7992de42] text-[#555555]">
         <!-- Header -->
         <div
-          class="flex h-[40px] items-center justify-between bg-slate-400 px-2"
+          class="flex h-[40px] items-center justify-between bg-slate-400 px-2 shadow-md"
         >
           <h1 class="font-semibold text-slate-50" v-if="currentBoard">
             {{ currentBoard.name }}
           </h1>
-          <div v-else>Loading...</div>
+          <div v-else class="text-slate-100">Loading...</div>
           <button class="flex items-center justify-center gap-2 text-slate-50">
             <span
               ><svg
@@ -279,6 +280,28 @@ export default {
         console.log("error on delete card item", error);
       }
     },
+    async handleDeleteBoard(boardName) {
+      try {
+        if (typeof boardName !== "string") {
+          console.log("Invalid boardName");
+        }
+        console.log(this.data.board);
+        let findIndex = this.data.board.findIndex((el) => {
+          return el.name === boardName;
+        });
+        console.log(findIndex);
+        let isDelete = confirm(
+          `Are you sure you want to delete this ${boardName} board ?`
+        );
+        if (isDelete) {
+          this.data.board.splice(findIndex, 1);
+          console.log("delete-board succesfull", this.data.board);
+        }
+        console.log("Delete action cancelled!");
+      } catch (error) {
+        console.log("Error on deleting board", error);
+      }
+    },
     // moveItem({ itemId, fromCard, toCard }) {
     //   // Find the source card's items array
     //   const sourceCard = this.data.board.boardDetails.find(
@@ -396,7 +419,7 @@ export default {
   async created() {
     await this.getData();
 
-    console.log(this.data.board, this.currentBoard);
+    console.log(this.data, this.currentBoard);
   },
 };
 </script>

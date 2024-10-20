@@ -5,21 +5,22 @@
     >
       <h1 class="text-slate-900">Your boards</h1>
       <button @click="setAddBoard">
-        <img src="../assets/img/add.png" class="h-[20px] w-[20px]" />
+        <img src="/assets/img/add.png" class="h-[20px] w-[20px]" />
       </button>
     </div>
     <div
-      class="group flex cursor-pointer items-center px-3 py-2 text-[14px] font-medium hover:bg-slate-300"
+      class="group flex cursor-pointer items-center px-3 py-2 text-[14px] font-medium visited:bg-red-500 hover:bg-slate-300"
       v-for="board in boards.board"
       :key="board.name"
       @click="changeBoard(board.name)"
     >
-      <img src="../assets/img/board.png" class="mr-3 h-[20px] w-[20px]" />
+      <img src="/assets/img/board.png" class="mr-3 h-[20px] w-[20px]" />
       <h3>{{ board.name }}</h3>
       <span
         class="absolute right-[9px] hidden h-[25px] w-[25px] rounded-xl p-[5px] shadow-sm hover:bg-slate-200 group-hover:block"
+        @click="deleteBoard(board.name)"
       >
-        <img src="../assets/img/delete.png" />
+        <img src="/assets/img/delete.png" />
       </span>
     </div>
     <!-- board popup -->
@@ -89,6 +90,10 @@ export default {
     },
     changeBoard(name) {
       this.$emit("board-name", name);
+      console.log(name);
+    },
+    deleteBoard(name) {
+      this.$emit("delete-board", name);
       console.log(name);
     },
   },

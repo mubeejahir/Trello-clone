@@ -34,7 +34,7 @@
             @click="handleCancel"
           >
             <img
-              src="../assets/img/cancel.png"
+              src="/assets/img/cancel.png"
               class="h-[20px] w-[20px] opacity-50"
             />
           </button>
@@ -50,7 +50,7 @@
         ]"
       >
         <span
-          ><img src="assets/img/add.png " class="mr-[6px] h-[18px] w-[18px]"
+          ><img src="/assets/img/add.png " class="mr-[6px] h-[18px] w-[18px]"
         /></span>
         Add a card
       </button>

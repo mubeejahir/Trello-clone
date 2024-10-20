@@ -22,7 +22,7 @@
         </button>
         <button class="rounded-sm p-1 hover:bg-slate-200" @click="handleCancel">
           <img
-            src="../assets/img/cancel.png"
+            src="/assets/img/cancel.png"
             class="h-[20px] w-[20px] opacity-50"
           />
         </button>
@@ -31,7 +31,7 @@
 
     <button :class="[`${displayList ? 'hidden' : 'flex'}`]" @click="setList">
       <span
-        ><img src="assets/img/add.png " class="mr-[6px] h-[20px] w-[20px]"
+        ><img src="/assets/img/add.png " class="mr-[6px] h-[20px] w-[20px]"
       /></span>
 
       Add Another List

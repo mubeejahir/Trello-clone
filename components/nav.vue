@@ -1,18 +1,15 @@
 <template>
   <div>
     <nav
-      class="flex h-[57px] items-center justify-between border-b-[1px] border-slate-300 bg-[#7992de9c] px-3 shadow-md"
+      class="flex h-[57px] items-center justify-between bg-[#7992de9c] px-3 shadow-lg"
     >
       <div class="flex justify-evenly">
         <div>
-          <img
-            src="../assets/img/Logo.png"
-            class="ml-2 mr-4 h-[25px] w-[76px]"
-          />
+          <img src="/assets/img/Logo.png" class="ml-2 mr-4 h-[25px] w-[76px]" />
         </div>
         <div class="flex gap-2 border border-y-0 border-slate-200 px-2">
           <img
-            src="../assets/img/trello-mark-blue.png"
+            src="/assets/img/trello-mark-blue.png"
             class="h-[24px] w-[24px]"
           />
           <h4 class="font-medium">Boards</h4>
@@ -28,7 +25,7 @@
         </div> -->
       </div>
       <div>
-        <img src="../assets/img/user.png" class="h-[35px] w-[35px]" />
+        <img src="/assets/img/User.png" class="h-[35px] w-[35px]" />
       </div>
     </nav>
   </div>

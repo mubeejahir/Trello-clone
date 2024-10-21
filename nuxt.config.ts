@@ -7,6 +7,10 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: "Trello-clone",
+
+      link: [
+        { rel: "icon", type: "image/x-icon", href: "/favicon.ico" }, // Favicon link
+      ],
     },
   },
 

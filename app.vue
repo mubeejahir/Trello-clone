@@ -50,7 +50,7 @@
             :dataItem="data"
             @move-item="moveItem"
             @add-card="handleAddCard(data.header, $event)"
-            @delete-cardItem="handleDeleteCardItem"
+            @delete-cardItem="handleDeleteCardItem(data.header, $event)"
           ></Cards>
           <AddList @add-header="setAddHeader"></AddList>
         </div>
@@ -194,10 +194,10 @@ export default {
         const newBoard = {
           boardDetails: [
             {
-              header: "Hello Board",
+              header: "To Do",
               items: [
                 {
-                  id: "",
+                  id: "delete",
                   item: "",
                 },
               ],
@@ -242,17 +242,23 @@ export default {
         console.log("Error changing board", error);
       }
     },
-    async handleDeleteCardItem(cardId) {
+    async handleDeleteCardItem(header, cardId) {
       try {
         if (typeof cardId !== "string") {
           console.log("Invalid card Id type");
         }
         console.log(this.currentBoard);
         let findId;
-        this.currentBoard.boardDetails.find((el) => {
-          findId = el.items.findIndex((item) => item.id === cardId);
-          console.log(findId);
-          if (findId) return findId;
+        this.currentBoard.boardDetails.forEach((el) => {
+          if (el.header === header) {
+            findId = el.items.findIndex((item) => {
+              return item.id === cardId;
+            });
+            console.log(findId);
+            if (findId) return findId;
+          } else {
+            return;
+          }
         });
 
         this.currentBoard.boardDetails.forEach((el) => {
@@ -260,7 +266,7 @@ export default {
             el.items[findId].id = "delete";
             el.items[findId].item = "";
             console.log("empty data added", this.currentBoard.boardDetails);
-          } else {
+          } else if (el.header === header) {
             el.items.splice(findId, 1);
             console.log("delete card", this.currentBoard.boardDetails);
           }

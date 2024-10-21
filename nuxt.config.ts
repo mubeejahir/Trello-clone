@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   ssr: false,
   app: {
     head: {
-      title: "Your App Title",
+      title: "Trello-clone",
     },
   },
 
